@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: 'transactions'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '1q2w3e4r'
+    volumes:
+      - /private/var/lib/postgresql:/var/lib/postgresql
+  web:
+    build: .
+    ports:
+      - "127.0.0.1:9001:9001"
+    command: python manage.py runserver 0.0.0.0:9001
+    depends_on:
+      - db
+    links:
+      - db:db
+    volumes:
+      - /tmp/transactions/postgresql:/run/postgresql
